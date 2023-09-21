@@ -1,0 +1,34 @@
+.SideMenu {
+  background-color: #f7f7f7;
+  width: 20%;
+  height: 100vh;
+
+  .search {
+    border-bottom: 1px solid rgb(196, 196, 196);
+    padding: 20px;
+
+    > form {
+      border: 1px solid rgb(196, 196, 196);
+      background-color: #fff;
+      width: 80%;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(100, 100, 100, 0.2);
+      height: 30px;
+      padding: 10px;
+      color: rgb(196, 196, 196);
+      display: flex;
+      align-items: center;
+      .search-icon {
+        font-size: 1.2em;
+        margin-right: 5px;
+      }
+      input {
+        width: 90%;
+        border: none;
+        outline: none;
+        height: 100%;
+      }
+    }
+  }
+}

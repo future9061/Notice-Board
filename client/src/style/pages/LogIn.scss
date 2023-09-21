@@ -1,0 +1,48 @@
+.LogIn {
+  background-color: #f7f7f7;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+
+  .home-icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    color: #4b4b4b;
+  }
+  > form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    input {
+      width: 40%;
+      height: 7%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+      outline: none;
+      border-radius: 20px;
+    }
+
+    .buttons {
+      button {
+        background-color: #fff;
+        border-radius: 20px;
+        padding: 10px;
+        color: #fff;
+
+        &:first-child {
+          background-color: #3a62f4;
+        }
+
+        &:last-child {
+          background-color: #62c554;
+        }
+      }
+    }
+  }
+}
