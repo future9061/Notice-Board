@@ -1,6 +1,7 @@
 import React from "react";
 import { BiSearch } from "react-icons/bi";
 import "../../style/components/ui/SideMenu.scss";
+import { Link } from "react-router-dom";
 
 function SideMenu() {
   return (
@@ -12,7 +13,9 @@ function SideMenu() {
         </form>
       </div>
       <ul>
-        <li>메뉴1</li>
+        <Link to="/create">
+          <li>글 쓰기</li>
+        </Link>
         <li>메뉴2</li>
         <li>메뉴3</li>
       </ul>

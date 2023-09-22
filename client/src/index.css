@@ -1,7 +1,6 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: content-box;
   font-family: "Noto Sans KR", sans-serif;
 }
 
@@ -9,6 +8,7 @@ body {
   margin: 0;
   padding: 0;
   cursor: default;
+  box-sizing: content-box;
 }
 
 img {
@@ -30,4 +30,11 @@ a {
 
 li {
   list-style: none;
+}
+
+input,
+textarea {
+  border: none;
+  outline: none;
+  resize: none;
 }

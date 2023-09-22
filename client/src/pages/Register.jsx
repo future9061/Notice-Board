@@ -1,34 +1,50 @@
 import React, { useState } from "react";
 import "../style/pages/Register.scss";
 import { AiFillHome } from "react-icons/ai";
-import { Link } from "react-router-dom";
-import firebase from "../firebase.js";
+import { Link, useNavigate } from "react-router-dom";
+import { firebaseAuth, createUserWithEmailAndPassword } from "../firebase.js";
 
 function Register() {
   const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
   const [PW, setPW] = useState("");
   const [PWConfirm, setPWConfirm] = useState("");
-
+  const [errMsg, setErrMsg] = useState("");
+  const navigate = useNavigate();
   const handleRegister = async (e) => {
     e.preventDefault();
 
     if (!(Name && Email && PW && PWConfirm)) {
       alert("모든 항목을 채워주세요");
+      return;
     }
     if (PW !== PWConfirm) {
       alert("비밀번호가 일치하지 않습니다");
+      return;
     }
 
-    let createdUser = await firebase
-      .auth()
-      .createUserWithEmailAndPassword(Email, PW);
-
-    await createdUser.user.updateProfile({
-      displayName: Name,
-    });
-
-    console.log(createdUser);
+    try {
+      const createdUser = await createUserWithEmailAndPassword(
+        firebaseAuth,
+        Email,
+        PW
+      );
+      console.log(createdUser);
+      alert("회원가입이 완료되었습니다");
+      navigate("/login");
+    } catch (err) {
+      switch (err.code) {
+        case "auth/weak-password":
+          setErrMsg("비밀번호는 6자리 이상이어야 합니다");
+          break;
+        case "auth/invalid-email":
+          setErrMsg("잘못된 이메일 주소입니다");
+          break;
+        case "auth/email-already-in-use":
+          setErrMsg("이미 가입되어 있는 계정입니다");
+          break;
+      }
+    }
   };
 
   return (
@@ -41,6 +57,7 @@ function Register() {
         <input
           type="name"
           placeholder="이름"
+          value={Name}
           onChange={(e) => {
             setName(e.target.value);
           }}
@@ -48,6 +65,7 @@ function Register() {
         <input
           type="email"
           placeholder="이메일"
+          value={Email}
           onChange={(e) => {
             setEmail(e.target.value);
           }}
@@ -55,6 +73,7 @@ function Register() {
         <input
           type="password"
           placeholder="비밀번호"
+          value={PW}
           onChange={(e) => {
             setPW(e.target.value);
           }}
@@ -62,10 +81,12 @@ function Register() {
         <input
           type="password"
           placeholder="비밀번호 재확인"
+          value={PWConfirm}
           onChange={(e) => {
             setPWConfirm(e.target.value);
           }}
         />
+        {errMsg && <p>{errMsg}</p>}
         <div className="buttons">
           <button onClick={(e) => handleRegister(e)}>회원가입</button>
         </div>

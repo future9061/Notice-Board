@@ -1,0 +1,32 @@
+.Upload {
+  > form {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    > input {
+      width: 90%;
+      border: 1px solid rgb(208, 207, 207);
+      padding: 10px 5px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    > textarea {
+      width: 90%;
+      border: 1px solid rgb(208, 207, 207);
+      padding: 10px 5px;
+      border-radius: 5px;
+      height: 50vh;
+    }
+
+    .buttons {
+      width: 90%;
+      text-align: end;
+      margin-top: 10px;
+    }
+  }
+}

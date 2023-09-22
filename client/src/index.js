@@ -10,6 +10,9 @@ import {
 import LogIn from './pages/LogIn';
 import Main from './components/Main';
 import Register from './pages/Register';
+import store from './store/store.js'
+import { Provider } from 'react-redux'
+import Upload from './pages/Upload';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Main />,
+      },
+      {
+        path: "/create",
+        element: <Upload />,
       }
     ],
   },
@@ -34,8 +41,9 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <RouterProvider router={router} />
-
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 );
 
 reportWebVitals();
