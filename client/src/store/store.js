@@ -1,20 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { createSlice } from '@reduxjs/toolkit'
-
-const userSlice = createSlice({
-  name: 'user',
-  initialState: {},
-  reducers: {
-    userLogin: (state, action) => {
-      return action.payload
-    }
-  },
-})
-
-export const { userLogin } = userSlice.actions
+import userSlice from './userSlice.js'
+import postSlice from './postSlice.js'
 
 export default configureStore({
   reducer: {
-    user: userSlice.reducer
+    user: userSlice.reducer,
+    post: postSlice.reducer
   },
 })

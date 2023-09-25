@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import "../style/pages/Register.scss";
 import { AiFillHome } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
-import { firebaseAuth, createUserWithEmailAndPassword } from "../firebase.js";
+import {
+  firebaseAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "../firebase.js";
 
 function Register() {
   const [Name, setName] = useState("");
@@ -29,7 +33,10 @@ function Register() {
         Email,
         PW
       );
-      console.log(createdUser);
+
+      await updateProfile(firebaseAuth.currentUser, { displayName: Name });
+
+      // console.log("createdUser", createdUser);
       alert("회원가입이 완료되었습니다");
       navigate("/login");
     } catch (err) {

@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../style/pages/LogIn.scss";
 import { AiFillHome } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { firebaseAuth, signInWithEmailAndPassword } from "../firebase.js";
+import { useDispatch } from "react-redux";
+import { userLogin } from "../store/userSlice";
 
 function LogIn() {
   const [Email, setEmail] = useState("");
   const [PW, setPW] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (!(Email && PW)) {
+      alert("모든 항목을 채워주세요");
+      return;
+    }
 
     try {
       const curUserInfo = await signInWithEmailAndPassword(
@@ -18,15 +26,24 @@ function LogIn() {
         Email,
         PW
       );
-      console.log("로그인", curUserInfo);
+      const userData = {
+        displayName: curUserInfo.user.displayName,
+        email: curUserInfo.user.email,
+        uid: curUserInfo.user.uid,
+      };
 
-      //로그인 성공하면 리덕스에 넣기  setUser(curUserInfo.user);
+      dispatch(userLogin(userData));
+
+      navigate("/");
     } catch (err) {
       switch (err.code) {
         case "auth/invalid-email":
           setErrMsg("존재하지 않는 아이디 입니다");
           break;
         case "auth/invalid-login-credentials":
+          setErrMsg("잘못된 비밀번호입니다");
+          break;
+        case "auth/wrong-password":
           setErrMsg("잘못된 비밀번호입니다");
           break;
       }

@@ -6,9 +6,13 @@ import { BiSolidHomeAlt2, BiSolidUser } from "react-icons/bi";
 import { IoSettingsSharp } from "react-icons/io5";
 import { MdExtension } from "react-icons/md";
 import { RxBorderDotted } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function NavBar() {
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
   return (
     <nav>
       <ul className="arrows">
@@ -40,16 +44,29 @@ function NavBar() {
         <li>
           <MdExtension />
         </li>
-        <Link to="/login">
-          <button>
-            <div>
-              <BiSolidUser />
-            </div>
-            <p>Login</p>
-          </button>
-        </Link>
-        <li>
+        {user ? (
+          <Link to="/">
+            <button>
+              <div>
+                <BiSolidUser />
+              </div>
+              <p>{user.displayName}</p>
+            </button>
+          </Link>
+        ) : (
+          <Link to="/login">
+            <button>
+              <div>
+                <BiSolidUser />
+              </div>
+              <p>Login</p>
+            </button>
+          </Link>
+        )}
+
+        <li className="Menu">
           <RxBorderDotted />
+          {user && <li>로그아웃</li>}
         </li>
       </div>
     </nav>

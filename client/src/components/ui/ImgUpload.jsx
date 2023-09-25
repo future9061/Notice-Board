@@ -8,13 +8,14 @@ function ImgUpload() {
 
   const submit = async (e) => {
     e.preventDefault();
+    const headers = { "Content-Type": "multipart/form-data" };
     try {
       const formData = new FormData();
       formData.append("image", file);
       formData.append("caption", caption);
 
       await axios.post("/api/images", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers,
       });
     } catch (err) {
       console.error("Axios Error:", err);
@@ -22,7 +23,7 @@ function ImgUpload() {
   };
 
   return (
-    <form className="ImgUpload" onChange={(e) => submit(e)}>
+    <form className="ImgUpload">
       <input
         type="file"
         name="image"
@@ -30,11 +31,12 @@ function ImgUpload() {
         onChange={(e) => setFile(e.target.files[0])}
       />
       <input
-        vale={caption}
+        value={caption}
         type="text"
         placeholder="사진의 설명을 적어주세요"
         onChange={(e) => setCaption(e.target.value)}
       />
+      <button onClick={(e) => submit(e)}>이미지 저장</button>
     </form>
   );
 }

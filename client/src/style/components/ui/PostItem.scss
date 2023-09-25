@@ -1,0 +1,11 @@
+.PostItem {
+  width: 80%;
+  padding: 30px;
+  > div {
+    cursor: pointer;
+    border: 1px solid red;
+    display: inline-block;
+    padding: 30px;
+    margin: 20px;
+  }
+}
