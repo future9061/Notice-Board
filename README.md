@@ -26,6 +26,8 @@
   https://inpa.tistory.com/entry/JS-%F0%9F%93%9A-FormData-%EC%A0%95%EB%A6%AC-fetch-api
 
 - s3에 이미지 업로드 <br />
-  https://www.youtube.com/watch?v=eQAIojcArRY&ab_channel=SamMeech-Ward
+  리액트 <br />
+  https://velog.io/@3436rngus/React-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%97%85%EB%A1%9C%EB%93%9C%EC%8B%9C%EC%97%90-Form-Data-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
   <br />
-  https://velog.io/@jaehyeon23/%EC%82%AC%EC%A7%84-%EC%97%85%EB%A1%9C%EB%93%9C-%EB%B0%8F-%EC%A0%80%EC%9E%A5%ED%95%98%EA%B8%B0-%ED%8F%B4%EB%8D%94-S3
+  서버 <br />
+  https://www.youtube.com/watch?v=eQAIojcArRY&ab_channel=SamMeech-Ward

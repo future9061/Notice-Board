@@ -2,16 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Post = require("../Model/PostModel.js")
 const Counter = require("../Model/CounterModel.js")
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 require('dotenv').config()
 const multer = require('multer')
-const { S3Client, PutObjectAclCommand } = require("@aws-sdk/client-s3")
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
-
-const bucketName = process.env.BUCKET_NAME
-const bucketRegion = process.env.BUCKER_REGION
-const accessKey = process.env.ACCESS_KEY
-const secretAccessKey = process.env.SECRET_ACCESS_KEY
 
 router.post("/submit", (req, res) => {
   Counter.findOne({ name: "counter" })
@@ -28,31 +23,41 @@ router.post("/submit", (req, res) => {
     .catch((err) => { console.log("서버", err) })
 })
 
+const bucketName = process.env.BUCKET_NAME
+const bucketRegion = process.env.BUCKER_REGION
+const accessKey = process.env.ACCESS_KEY
+const secretAccessKey = process.env.SECRET_ACCESS_KEY
 
 const s3 = new S3Client({
   credentials: {
     accessKeyId: accessKey,
     secretAccessKey: secretAccessKey
   },
-  region: bucketRegion,
+  region: bucketRegion
 })
-const acl = 'public-read-write'; // acl 반드시.. 
-router.post("/image", upload.single('image'), async (req, res) => {
-  console.log(req.file.originalnam)
-  console.log(req.file)
-  // const params = {
-  //   Bucket: bucketName,
-  //   Key: req.file.originalname,
-  //   Body: req.file.buffer,
-  //   ContentType: req.file.mimetype,
-  //   ACL: acl
-  // }
 
-  // const command = new PutObjectAclCommand(params)
+router.post("/images", upload.single('image'), async (req, res) => {
+
+  const params = {
+    Bucket: bucketName,
+    Key: req.file.originalname,
+    Body: req.file.buffer,
+    ContentType: req.file.mimetype
+  }
 
 
-  // await s3.send(command)
-  res.send({})
+  const putObject = new PutObjectCommand(params);
+
+  try {
+    await s3.send(putObject);
+    res.send({ success: true });
+  } catch (error) {
+    console.error("Error uploading to S3:", error);
+    res.status(500).send({ success: false, error: "Error uploading to S3" });
+  }
 })
+
+
+
 
 module.exports = router;

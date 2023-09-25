@@ -4,29 +4,36 @@ import axios from "axios";
 
 function ImgUpload() {
   const [file, setFile] = useState();
+  const [caption, setCaption] = useState("");
 
-  const FileUpload = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("caption", caption);
 
-    setFile(e.target.files[0]);
-    const formData = new FormData();
-    formData.append("image", file);
-
-    axios
-      .post("/api/image", formData)
-      .then((res) => {
-        res.data.success && console.log("이미지 전송 성공");
-      })
-      .catch((err) => console.log("이미지업로드", err));
+      await axios.post("/api/images", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    } catch (err) {
+      console.error("Axios Error:", err);
+    }
   };
 
   return (
-    <form className="ImgUpload" enctype="multipart/form-data">
+    <form className="ImgUpload" onChange={(e) => submit(e)}>
       <input
         type="file"
         name="image"
         accept="image/*"
-        onChange={(e) => FileUpload(e)}
+        onChange={(e) => setFile(e.target.files[0])}
+      />
+      <input
+        vale={caption}
+        type="text"
+        placeholder="사진의 설명을 적어주세요"
+        onChange={(e) => setCaption(e.target.value)}
       />
     </form>
   );
