@@ -3,11 +3,13 @@ import './App.css';
 import Header from './components/Header';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getPost } from './store/postSlice.js';
+
 
 function App() {
   const dispatch = useDispatch();
+  // const state = useSelector((state) => state.post)
   useEffect(() => {
     axios.get("/api")
       .then((res) => {

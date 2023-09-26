@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 const ImageSchema = new mongoose.Schema({
   name: String,
-  imgNum: String,
+  imgId: String,
   caption: String,
-  url: String
+  imgUrl: String
 });
 
 const Image = mongoose.model('Image', ImageSchema);

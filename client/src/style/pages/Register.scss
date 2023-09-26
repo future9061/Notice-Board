@@ -29,6 +29,38 @@
       border-radius: 20px;
     }
 
+    .photo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 50px;
+      background-color: rgb(211, 211, 211);
+      position: relative;
+      text-align: center;
+      font-size: 65px;
+      color: #fff;
+
+      .photo-icon {
+        transform: translateY(10px);
+      }
+
+      > input {
+        color: transparent;
+        position: absolute;
+        width: 70px;
+        height: 30px;
+        top: 100%;
+        left: 10%;
+      }
+
+      input[type="file"]::file-selector-button {
+        border: none;
+        &:active {
+          background-color: rgb(164, 164, 164);
+        }
+      }
+    }
+
     p {
       color: red;
       font-size: 0.8em;

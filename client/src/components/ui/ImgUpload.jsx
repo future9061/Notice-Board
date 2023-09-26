@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../style/components/ui/ImgUpload.scss";
 import axios from "axios";
 
-function ImgUpload() {
+function ImgUpload({ setImg }) {
   const [file, setFile] = useState();
   const [caption, setCaption] = useState("");
 
@@ -14,9 +14,12 @@ function ImgUpload() {
       formData.append("image", file);
       formData.append("caption", caption);
 
-      await axios.post("/api/images", formData, {
+      const response = await axios.post("/api/images", formData, {
         headers,
       });
+
+      setImg(response.data.imgData);
+      // console.log("Response Data:", response.data.imgData);
     } catch (err) {
       console.error("Axios Error:", err);
     }

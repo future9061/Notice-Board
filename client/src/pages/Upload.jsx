@@ -8,6 +8,7 @@ import ImgUpload from "../components/ui/ImgUpload";
 function Upload() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [img, setImg] = useState();
 
   const handleValue = (e) => {
     e.target.id === "title"
@@ -21,7 +22,9 @@ function Upload() {
     let body = {
       title: title,
       content: content,
+      img: img,
     };
+    console.log("upload", img);
 
     axios
       .post("/api/submit", body)
@@ -45,7 +48,7 @@ function Upload() {
           value={title}
           onChange={(e) => handleValue(e)}
         />
-        <ImgUpload />
+        <ImgUpload setImg={setImg} />
         <textarea
           placeholder="내용을 입력하세요"
           id="content"

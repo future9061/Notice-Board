@@ -2,18 +2,43 @@ const express = require('express')
 const router = express.Router()
 const Post = require("../Model/PostModel.js")
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
-// const client = new S3Client(clientParams);
-// const command = new GetObjectCommand(getObjectParams);
-// const url = getSignedUrl(client, command, { expiresIn: 3600 });
+const { GetObjectCommand, S3Client } = require("@aws-sdk/client-s3");
+require('dotenv').config()
 
-router.get("/", (req, res) => {
+const bucketName = process.env.BUCKET_NAME
+const bucketRegion = process.env.BUCKER_REGION
+const accessKey = process.env.ACCESS_KEY
+const secretAccessKey = process.env.SECRET_ACCESS_KEY
 
-  Post.find()
-    .then((doc) => {
-      res.send({ success: true, post: doc })
-    }).catch((err) => console.log(err))
+const s3Client = new S3Client({
+  region: bucketRegion,
+  credentials: {
+    accessKeyId: accessKey,
+    secretAccessKey: secretAccessKey,
+  }
+})
 
+router.get("/", async (req, res) => {
+  const posts = await Post.find();
+
+  for (const post of posts) {
+
+    const getObjectParams = {
+      Bucket: bucketName,
+      Key: post.img.imgId
+    }
+
+    const command = new GetObjectCommand(getObjectParams);
+    const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 })//초단위
+    post.img.imgUrl = url
+
+  }
+  console.log(posts)
+  res.send({ success: true, post: posts })
+})
+
+router.get("/Detail", async (req, res) => {
+  res.send({ success: true })
 })
 
 module.exports = router

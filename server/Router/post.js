@@ -11,14 +11,13 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 const sharp = require('sharp');
 
-
-
 router.post("/submit", (req, res) => {
   Counter.findOne({ name: "counter" })
     .then((counter) => {
       req.body.postNum = counter.postNum
 
       const postItem = new Post(req.body)
+
       postItem.save(req.body)
         .then(() => {
           Counter.updateOne({ name: "counter" }, { $inc: { postNum: 1 } })
@@ -48,15 +47,15 @@ router.post("/images", upload.single('image'), async (req, res) => {
   //이미지 리사이즈
   const resizeImg = await sharp(req.file.buffer)
     .resize({
-      width: 1920,
-      height: 1080,
+      width: 400,
+      height: 200,
       fit: "contain"
     }).toBuffer();
 
   //몽고db에 이미지 고유 번호, 이름,caption 넣기
   const imgInfor = {
     name: req.file.originalname,
-    imgNum: randomImageName(),
+    imgId: randomImageName(),
     caption: req.body.caption
   }
 
@@ -65,7 +64,7 @@ router.post("/images", upload.single('image'), async (req, res) => {
 
   const params = {
     Bucket: bucketName,
-    Key: randomImageName(),
+    Key: imgInfor.imgId,
     Body: resizeImg,
     ContentType: req.file.mimetype
   }
@@ -75,7 +74,7 @@ router.post("/images", upload.single('image'), async (req, res) => {
 
   try {
     await s3.send(putObject);
-    res.send({ success: true, imgData: imgData });
+    res.send({ success: true, imgData: imgInfor });
   } catch (error) {
     console.error("Error uploading to S3:", error);
     res.status(500).send({ success: false, error: "Error uploading to S3" });

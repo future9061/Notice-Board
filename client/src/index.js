@@ -13,6 +13,7 @@ import Register from './pages/Register';
 import store from './store/store.js'
 import { Provider } from 'react-redux'
 import Upload from './pages/Upload';
+import Detail from './pages/Detail';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/create",
         element: <Upload />,
+      },
+      {
+        path: "/post/:postNum",
+        element: <Detail />,
       }
     ],
   },

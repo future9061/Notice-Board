@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../style/pages/Register.scss";
 import { AiFillHome } from "react-icons/ai";
+import { FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import {
   firebaseAuth,
@@ -14,11 +15,12 @@ function Register() {
   const [PW, setPW] = useState("");
   const [PWConfirm, setPWConfirm] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [photo, setPhoto] = useState();
   const navigate = useNavigate();
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (!(Name && Email && PW && PWConfirm)) {
+    if (!(Name && Email && PW && PWConfirm && photo)) {
       alert("모든 항목을 채워주세요");
       return;
     }
@@ -38,7 +40,7 @@ function Register() {
 
       // console.log("createdUser", createdUser);
       alert("회원가입이 완료되었습니다");
-      navigate("/login");
+      // navigate("/login");
     } catch (err) {
       switch (err.code) {
         case "auth/weak-password":
@@ -61,6 +63,16 @@ function Register() {
       </Link>
 
       <form>
+        <div className="photo">
+          <FaUser className="photo-icon" />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              setPhoto(e.target.files[0]);
+            }}
+          />
+        </div>
         <input
           type="name"
           placeholder="이름"

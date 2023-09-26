@@ -44,7 +44,7 @@ function NavBar() {
         <li>
           <MdExtension />
         </li>
-        {user ? (
+        {user.uid ? (
           <Link to="/">
             <button>
               <div>
