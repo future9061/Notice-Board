@@ -24,7 +24,6 @@ function Upload() {
       content: content,
       img: img,
     };
-    console.log("upload", img);
 
     axios
       .post("/api/submit", body)

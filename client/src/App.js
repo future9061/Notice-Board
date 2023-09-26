@@ -9,7 +9,7 @@ import { getPost } from './store/postSlice.js';
 
 function App() {
   const dispatch = useDispatch();
-  // const state = useSelector((state) => state.post)
+  const state = useSelector((state) => state.post)
   useEffect(() => {
     axios.get("/api")
       .then((res) => {
@@ -18,6 +18,9 @@ function App() {
       .catch((err) => console.log("클라이언트 에러", err))
   }, [])
 
+  // useEffect(() => {
+  //   console.log("앱", state)
+  // }, [state])
   return (
     <div className='app'>
       <Header />

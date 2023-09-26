@@ -11,7 +11,7 @@ function PostItem() {
       {post.map((elem) => {
         return (
           <div key={elem.postNum}>
-            <Link to={`/post/${elem.postNum}`}>
+            <Link to={`/detail/${elem.postNum}`}>
               <h5>{elem.title}</h5>
               <img src={elem.img.imgUrl} alt="썸네일" />
               <p>{elem.content}</p>

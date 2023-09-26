@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         element: <Upload />,
       },
       {
-        path: "/post/:postNum",
+        path: "/detail/:postNum",
         element: <Detail />,
       }
     ],

@@ -33,12 +33,7 @@ router.get("/", async (req, res) => {
     post.img.imgUrl = url
 
   }
-  console.log(posts)
   res.send({ success: true, post: posts })
-})
-
-router.get("/Detail", async (req, res) => {
-  res.send({ success: true })
 })
 
 module.exports = router
