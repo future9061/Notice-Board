@@ -1,3 +1,174 @@
+# 🎇목차
+
+1. [💻 프로젝트 소개](#-프로젝트-소개)
+2. [📁 directory 구조](#-directory-구조)
+3. [⏲ 개발 기간](#-개발-기간)
+4. [❗ 개발 환경](#-개발-환경)
+5. [📌 주요 기능](#-주요-기능)
+6. [🧾 code review](#-code-review)
+7. [📢 Project review](#-project-review)
+
+<br>
+
+## 💻 프로젝트 소개
+
+<br>
+
+![image](https://github.com/future9061/portfolio/assets/132829711/30ba018e-7153-434c-87c4-4f10c1852873)
+
+<br>
+
+- `URL` : https://discord-mirae.netlify.app
+- 나를 소개하는 Portfolio 목적의 웹으로 React 프레임워크로 완성한 웹입니다.
+- 페이지 이동 시 content만 부드럽게 바뀌는 SPA의 특성이 두드러지는 UI입니다.
+- 테마로 Blue, Basic을 구성 해 사용자의 취향에 따라 테마를 선택할 수 있습니다.
+- Ux를 고려하여 상단에 메뉴바와 좌측에 뒤로가기 버튼, 다이렉트 메뉴를 계속 노출시켜 페이지 이동이 용이한 사용자 친화적인 웹입니다.
+
+<br>
+
+# 📁 directory 구조
+
+- ### client directory
+
+```
+📦client
+ ┣ 📂public
+ ┣ 📂src
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📂ui
+ ┃ ┣ 📂pages
+ ┃ ┣ 📂store //Redux로 로그인 한 사용자 데이터와 post 데이터 관리
+ ┃ ┣ 📂style //scss로 style를 컴포넌트 별로 주며, 폴더 구조를 똑같이 함
+ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┣ 📂ui
+ ┃ ┣ 📜App.js
+ ┃ ┣ 📜firebase.js
+ ┃ ┣ 📜index.css
+ ┃ ┣ 📜index.js
+ ┃ ┣ 📜reportWebVitals.js
+ ┃ ┗ 📜setupProxy.js //http proxy 라이브러리 설치 후 config 파일
+ ┣ 📜.env // firebase api는 env로 관리
+ ┗ 📜package.json
+```
+
+- ### server directory
+
+```
+📦server
+ ┣ 📂Model //몽고db 모델 디렉토리
+ ┃ ┣ 📜CounterModel.js
+ ┃ ┣ 📜ImageModel.js
+ ┃ ┗ 📜PostModel.js
+ ┣ 📂Router //express router
+ ┃ ┣ 📜get.js
+ ┃ ┗ 📜post.js
+ ┣ 📜.env
+ ┣ 📜index.js
+ ┗ 📜package.json
+```
+
+<br>
+
+## ⏲ 개발 기간
+
+- 23.09.21 ~ 미정
+
+<br>
+
+# ❗ 개발 환경
+
+- **Editor** : `vs code 1.77`
+- **Runtime** : `Node.js`
+- **Framework**
+  - client : `react(18.2.0)`
+  - server : `express(4.18.2)`
+- **Library**
+  - client : `axios(1.5.0)` `reduxjs/toolkit(1.9.5)` `http-proxy-middleware(2.0.6)` `firebase(10.4.0)` `sass(1.68.0)`
+  - server : `aws-sdk/client-s3(3.417.0)` `aws-sdk/s3-request-presigner(3.418.0)` `express(4.18.2)` `mongodb(6.1.0)` `mongoose(7.5.2)` `multer(1.4.4)` `dotenv(16.3.1)`
+- **Cloud service**
+  - `AWS EC2` `AWS S3`
+
+<br>
+
+## 📌 주요 기능
+
+#### 로그인, 로그아웃
+
+- 파이어베이스 인증 객체를 이용하여 로그인, 로그아웃 기능 구현
+
+<br >
+
+#### 게시물 CRUD
+
+- rest API로 CRUD 구현
+- create 시 이미지는 S3 Bucket에 저장 - [코드 보기](#s3-bucket에-이미지-저장)
+
+<br >
+
+#### 댓글 달기
+
+<br>
+
+#### 게시물 검색
+
+<br>
+
+## 🧾 code review
+
+- ### S3 Bucket에 이미지 저장
+  - client에서 FormData 인스턴스로 이미지 파일을 서버에 전달
+  - 서버는 multer로 이미지 파일을 요청 받음
+  - 받은 파일은 sharp로 데이터 조작(사이즈만 조절)
+  - 정보는 mongoDB의 저장
+  - Buffer는 PutObjectCommand로 S3 Bucket에 send
+
+```javascript
+const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage }); //받아온 파일은 폴더가 아닌 메모리에 저장하기 위함
+
+const randomImageName = () => crypto.randomBytes(32).toString("hex"); //crypto로 랜덤 숫자를 만들어 이미지 고유의 Id로 전달한다.
+
+router.post("/images", upload.single("image"), async (req, res) => {
+  //sharp로 Buffer 데이터 조작 생략...
+
+  //몽고db에 전달할 이미지 정보 객체 만듦
+  const imgInfor = {
+    name: req.file.originalname,
+    imgId: randomImageName(),
+    caption: req.body.caption,
+  };
+
+  //몽고 db 이미지 데이터 모델을 가져와 인스턴스 생성, save로 저장
+  const imgData = new Image(imgInfor);
+  imgData.save();
+
+  //PutObjectCommand에 전달할 이미지 데이터 객체 생성
+  const params = {
+    Bucket: bucketName,
+    Key: imgInfor.imgId,
+    Body: resizeImg,
+    ContentType: req.file.mimetype,
+  };
+
+  //버켓에 전달할 인스턴스 생성
+  const putObject = new PutObjectCommand(params);
+
+  //s3 client로 버켓에 이미지 데이터를 전달.
+  try {
+    await s3.send(putObject);
+    res.status(200).send({ success: true, imgData: imgInfor });
+  } catch (error) {
+    console.error("Error uploading to S3:", error);
+    res.status(500).send({ success: false, error: "Error uploading to S3" });
+  }
+});
+```
+
+<br>
+
+## 📢 Project review
+
 ❗기능
 
 로그인 및 로그아웃 - 닉네임 중복검사
@@ -9,8 +180,6 @@
 조회수
 댓글 - 수정, 삭제
 ❗브랜치 관리 main develop client 랑 server 따로 만들어서 별도로 분리하고 merge는 develop에서 반드시 기능별로 커밋하기 기능 짤 때마다 feature/login(c) feature/login/(s) 나눠서 프론트 단 백 단 브랜치 구분해서 올려! add 할 때 폴더 구분
-
-❗이슈 관리, project 관리
 
 참고한 게시물
 
