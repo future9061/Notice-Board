@@ -17,7 +17,7 @@ const s3Client = new S3Client({
   }
 })
 
-router.use('/remove/:postNum', async (req, res) => {
+router.delete('/remove/:postNum', async (req, res) => {
 
   const post = await Post.findOne({ postNum: req.params.postNum })
 

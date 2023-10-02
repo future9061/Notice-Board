@@ -23,7 +23,7 @@ function Upload() {
     minutes: today.getMinutes(),
   };
 
-  const time = `${currentDate.year}.${currentDate.month}.${currentDate.date}    ${currentDate.hours}:${currentDate.minutes}`;
+  const time = `${currentDate.year}년 ${currentDate.month}월 ${currentDate.date}일     ${currentDate.hours}:${currentDate.minutes}`;
 
   const handleValue = (e) => {
     e.target.id === "title"

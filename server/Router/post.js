@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Post = require("../Model/PostModel.js")
 const Counter = require("../Model/CounterModel.js")
-const Image = require("../Model/ImageModel.js")
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const crypto = require('crypto');
 require('dotenv').config()
@@ -59,9 +58,6 @@ router.post("/images", upload.single('image'), async (req, res) => {
     caption: req.body.caption
   }
 
-  const imgData = new Image(imgInfor)
-  imgData.save()
-
   const params = {
     Bucket: bucketName,
     Key: imgInfor.imgId,
@@ -80,8 +76,6 @@ router.post("/images", upload.single('image'), async (req, res) => {
     res.status(500).send({ success: false, error: "Error uploading to S3" });
   }
 })
-
-
 
 
 module.exports = router;

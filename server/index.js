@@ -13,6 +13,7 @@ app.use(express.static(path.join(__dirname, '../client/build')))
 app.use('/api', require("./Router/post.js"));
 app.use('/api', require("./Router/get.js"));
 app.use('/api', require("./Router/delete.js"));
+app.use('/api', require("./Router/put.js"));
 
 app.listen(port, () => {
   console.log(`서버 시작 ${port}`)
