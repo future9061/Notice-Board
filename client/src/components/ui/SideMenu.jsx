@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BiSearch } from "react-icons/bi";
 import "../../style/components/ui/SideMenu.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function SideMenu() {
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  const handlePath = (e) => {
+    user.uid ? navigate("/create") : alert("로그인 시 이용할 수 있습니다.");
+  };
+
   return (
     <div className="SideMenu">
       <div className="search">
@@ -13,9 +21,7 @@ function SideMenu() {
         </form>
       </div>
       <ul>
-        <Link to="/create">
-          <li>글 쓰기</li>
-        </Link>
+        <li onClick={(e) => handlePath(e)}>글 쓰기</li>
         <li>메뉴2</li>
         <li>메뉴3</li>
       </ul>

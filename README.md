@@ -85,6 +85,7 @@
 #### 로그인, 로그아웃
 
 - 파이어베이스 인증 객체를 이용하여 로그인, 로그아웃 기능 구현
+- setPersistence로 사용자의 로그인 데이터가 sessionStorage에 저장 - [코드 보기](#파이어베이스-사용자-정보-저장)
 
 <br >
 
@@ -157,6 +158,9 @@ router.post("/images", upload.single("image"), async (req, res) => {
 
 <br>
 
+- ### 파이어베이스 사용자 정보 저장
+  -
+
 ## 📢 Project review
 
 ❗기능
@@ -190,6 +194,11 @@ router.post("/images", upload.single("image"), async (req, res) => {
   <br />
   서버 <br />
   https://www.youtube.com/watch?v=eQAIojcArRY&ab_channel=SamMeech-Ward
+
+- 파이어베이스 새로고침 시 로그인 유지 안되는 문제 발견 <br />
+  setPersistence 의 기본값 local로 웹을 꺼도 사용자 정보가 저장되어 있으나.. <br />
+  전체 F5 하면 사용자 정보가 저장된 redux가 초기화 되는 문제였다. <br />
+  https://velog.io/@project_mizzu/React%EB%A1%9C-Firebase-%EC%86%8C%EC%85%9C%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0
 
 s3 butket 이미지 업로드
 

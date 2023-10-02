@@ -1,5 +1,8 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  getAuth, browserSessionPersistence, createUserWithEmailAndPassword,
+  setPersistence, signInWithEmailAndPassword, updateProfile
+} from "firebase/auth";
 
 
 const firebaseConfig = {
@@ -15,5 +18,5 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 const firebaseAuth = getAuth(firebaseApp);
 
-export { firebaseAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile };
+export { browserSessionPersistence, setPersistence, firebaseAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile };
 

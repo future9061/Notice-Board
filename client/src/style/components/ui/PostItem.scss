@@ -2,10 +2,16 @@
   width: 80%;
   padding: 30px;
   > div {
+    text-align: center;
     cursor: pointer;
     border: 1px solid red;
     display: inline-block;
     padding: 30px;
     margin: 20px;
+    width: 30%;
+
+    img {
+      width: 70%;
+    }
   }
 }
