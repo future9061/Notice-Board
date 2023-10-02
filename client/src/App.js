@@ -11,14 +11,6 @@ import { userLogin } from './store/userSlice';
 function App() {
 
   const dispatch = useDispatch();
-  const sample = useSelector((state) => state.user)
-  // const userData = {
-  //   displayName: curUserInfo.displayName,
-  //   email: curUserInfo.email,
-  //   uid: curUserInfo.uid,
-  // };
-
-  // dispatch(userLogin(userData));
 
   useEffect(() => {
     axios.get("/api")
@@ -27,7 +19,6 @@ function App() {
       })
       .catch((err) => console.log("클라이언트 에러", err))
   }, [])
-
 
   useEffect(() => {
     for (const key of Object.keys(sessionStorage)) {
