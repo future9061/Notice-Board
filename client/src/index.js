@@ -14,6 +14,7 @@ import store from './store/store.js'
 import { Provider } from 'react-redux'
 import Upload from './pages/Upload';
 import Detail from './pages/Detail';
+import Edit from './pages/Edit';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/detail/:postNum",
         element: <Detail />,
+      },
+      {
+        path: "/edit/:postNum",
+        element: <Edit />,
       }
     ],
   },
