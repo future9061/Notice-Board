@@ -5,11 +5,10 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux'
 import { getPost } from './store/postSlice.js';
-import { firebaseAuth } from "./firebase.js"
 import { userLogin } from './store/userSlice';
 
 function App() {
-
+  const post = useSelector((state) => state.post)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,7 +17,7 @@ function App() {
         res.data.success && dispatch(getPost(res.data.post))
       })
       .catch((err) => console.log("클라이언트 에러", err))
-  }, [])
+  }, [post])
 
   useEffect(() => {
     for (const key of Object.keys(sessionStorage)) {

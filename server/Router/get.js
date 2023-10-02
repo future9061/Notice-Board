@@ -31,7 +31,6 @@ router.get("/", async (req, res) => {
     const command = new GetObjectCommand(getObjectParams);
     const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 })//초단위
     post.img.imgUrl = url
-
   }
   res.send({ success: true, post: posts })
 })

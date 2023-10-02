@@ -17,8 +17,8 @@ function Detail() {
       <div className="inner">
         <div className="title">
           <h2>{post?.title}</h2>
-          <p>작성자 이름</p>
-          <small>작성 날짜</small>
+          <p>{post?.user?.displayName}</p>
+          <small>{post?.date}</small>
         </div>
         <div className="content">
           {post?.img?.imgUrl && (

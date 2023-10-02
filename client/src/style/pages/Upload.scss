@@ -27,6 +27,13 @@
       width: 90%;
       text-align: end;
       margin-top: 10px;
+
+      button {
+        &:active {
+          background-color: rgb(103, 103, 103);
+          color: white;
+        }
+      }
     }
   }
 }

@@ -9,7 +9,13 @@ const postSchema = new mongoose.Schema({
     imgId: String,
     caption: String,
     imgUrl: String
-  }
+  },
+  user: {
+    uid: String,
+    displayName: String,
+    email: String,
+  },
+  date: String
 });
 
 const Post = mongoose.model('Post', postSchema);

@@ -1,14 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../style/pages/Upload.scss";
 import { AiFillHome } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ImgUpload from "../components/ui/ImgUpload";
+import { useSelector } from "react-redux";
 
 function Upload() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [img, setImg] = useState();
+  const [btnTogg, setBtnTogg] = useState("");
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const today = new Date();
+
+  const currentDate = {
+    year: today.getFullYear(),
+    month: today.getMonth() + 1,
+    date: today.getDate(),
+    hours: today.getHours(),
+    minutes: today.getMinutes(),
+  };
+
+  const time = `${currentDate.year}.${currentDate.month}.${currentDate.date}    ${currentDate.hours}:${currentDate.minutes}`;
 
   const handleValue = (e) => {
     e.target.id === "title"
@@ -18,21 +33,34 @@ function Upload() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (btnTogg) {
+      const currentUser = {
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+      };
 
-    let body = {
-      title: title,
-      content: content,
-      img: img,
-    };
+      let body = {
+        title: title,
+        content: content,
+        img: img,
+        user: currentUser,
+        date: time,
+      };
 
-    axios
-      .post("/api/submit", body)
-      .then((res) => {
-        res.data.sucess && console.log("요청 응답 성공");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      axios
+        .post("/api/submit", body)
+        .then((res) => {
+          res.data.sucess && console.log("요청 응답 성공");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      navigate("/");
+    } else {
+      alert("사진을 저장해주세요");
+    }
   };
 
   return (
@@ -47,7 +75,7 @@ function Upload() {
           value={title}
           onChange={(e) => handleValue(e)}
         />
-        <ImgUpload setImg={setImg} />
+        <ImgUpload setImg={setImg} setBtnTogg={setBtnTogg} btnTogg={btnTogg} />
         <textarea
           placeholder="내용을 입력하세요"
           id="content"
