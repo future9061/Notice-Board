@@ -14,16 +14,6 @@
 
 <br>
 
-![image](https://github.com/future9061/portfolio/assets/132829711/30ba018e-7153-434c-87c4-4f10c1852873)
-
-<br>
-
-- `URL` : https://discord-mirae.netlify.app
-- 나를 소개하는 Portfolio 목적의 웹으로 React 프레임워크로 완성한 웹입니다.
-- 페이지 이동 시 content만 부드럽게 바뀌는 SPA의 특성이 두드러지는 UI입니다.
-- 테마로 Blue, Basic을 구성 해 사용자의 취향에 따라 테마를 선택할 수 있습니다.
-- Ux를 고려하여 상단에 메뉴바와 좌측에 뒤로가기 버튼, 다이렉트 메뉴를 계속 노출시켜 페이지 이동이 용이한 사용자 친화적인 웹입니다.
-
 <br>
 
 # 📁 directory 구조
