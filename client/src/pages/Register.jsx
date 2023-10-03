@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../style/pages/Register.scss";
 import { AiFillHome } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,14 +21,19 @@ function Register() {
   const [PWConfirm, setPWConfirm] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [photo, setPhoto] = useState();
-  const [photoUrl, setPhotoUrl] = useState();
+  const [photoUrl, setPhotoUrl] = useState(null);
   const navigate = useNavigate();
 
   const handleFileSelect = (e) => {
     setPhoto(e.target.files[0]);
-    const imageUrl = URL.createObjectURL(photo);
-    setPhotoUrl(imageUrl);
   };
+
+  useEffect(() => {
+    if (photo) {
+      const imageUrl = URL.createObjectURL(photo);
+      setPhotoUrl(imageUrl);
+    }
+  }, [photo]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
