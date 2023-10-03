@@ -67,20 +67,10 @@
       }
     }
 
-    p {
+    > p {
       color: red;
       font-size: 0.8em;
       margin-bottom: 15px;
-    }
-
-    .buttons {
-      button {
-        background-color: #fff;
-        border-radius: 20px;
-        padding: 10px;
-        color: #fff;
-        background-color: #62c554;
-      }
     }
   }
 }

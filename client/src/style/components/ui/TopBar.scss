@@ -1,0 +1,72 @@
+.TopBar {
+  border-bottom: 1px solid #eaeaea;
+  background-color: #fff;
+  > .TopBar-inner {
+    padding: 3px 50px;
+    color: rgb(172, 172, 172);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+
+    > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+
+      &:first-child {
+        font-weight: 600;
+        color: #407e72;
+        > .pen {
+          transform: scaleX(-0.7) translate(-6px, 1px);
+        }
+        > p {
+          transform: translateX(-2px);
+        }
+      }
+
+      ul {
+        position: relative;
+        cursor: pointer;
+        &:hover {
+          color: #5bd6c0;
+          .show {
+            display: block;
+          }
+        }
+        .show {
+          position: absolute;
+          display: none;
+          background-color: #5bd6c0;
+          color: #fff;
+          padding: 2px;
+          border-radius: 5px;
+          font-size: 12px;
+          writing-mode: vertical-lr;
+          right: -5px;
+          top: calc(100% + 5px);
+          letter-spacing: -1px;
+          z-index: 1;
+
+          &::after {
+            content: "";
+            display: block;
+            width: 0;
+            height: 0;
+            border-bottom: 5px solid #5bd6c0;
+            border-top: 5px solid transparent;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            position: absolute;
+            bottom: 100%;
+            right: 10px;
+          }
+        }
+        li {
+          margin: 0px 3px;
+        }
+      }
+    }
+  }
+}

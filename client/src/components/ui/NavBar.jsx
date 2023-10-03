@@ -1,73 +1,87 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../style/components/ui/NavBar.scss";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import { BsArrowClockwise } from "react-icons/bs";
-import { BiSolidHomeAlt2, BiSolidUser } from "react-icons/bi";
-import { IoSettingsSharp } from "react-icons/io5";
-import { MdExtension } from "react-icons/md";
-import { RxBorderDotted } from "react-icons/rx";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { BsPostcard } from "react-icons/bs";
+import {
+  AiOutlineComment,
+  AiOutlineHeart,
+  AiOutlineLogout,
+} from "react-icons/ai";
+import { signOut, firebaseAuth } from "../../firebase.js";
+import { userLogin } from "../../store/userSlice";
 
 function NavBar() {
   const user = useSelector((state) => state.user);
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [slide, setSlide] = useState("");
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    signOut(firebaseAuth)
+      .then(() => {
+        dispatch(userLogin({}));
+      })
+      .catch((err) => {
+        console.log("로그아웃 에러", err);
+      });
+  };
 
   return (
-    <nav>
-      <ul className="arrows">
-        <li>
-          <AiOutlineArrowLeft />
-        </li>
-        <li>
-          <AiOutlineArrowRight />
-        </li>
-        <li>
-          <BsArrowClockwise />
-        </li>
-      </ul>
-
-      <div className="url">
-        <BiSolidHomeAlt2 />
-        <div className="text">
-          <p className="show">
-            127.0.0/안녕하세요. 여러분 for developer에 오신것을 환영해요
-          </p>
-          <p>127.0.0/안녕하세요. 여러분 for developer에 오신것을 환영해요</p>
-          <p>127.0.0/안녕하세요. 여러분 for developer에 오신것을 환영해요</p>
-        </div>
-      </div>
-      <div className="login">
-        <li>
-          <IoSettingsSharp />
-        </li>
-        <li>
-          <MdExtension />
-        </li>
-        {user.uid ? (
-          <Link to="/">
-            <button>
-              <div className="photoUrl">
-                <img src={user.photoURL} alt={user.photoURL} />
-              </div>
-              <p>{user.displayName}</p>
-            </button>
-          </Link>
+    <nav className="NavBar">
+      <div className="NavBar-inner">
+        <Link to="/">
+          <div className="logo">
+            <img src={process.env.PUBLIC_URL + "/img/logo.png"} alt="logo" />
+          </div>
+        </Link>
+        {!user.uid ? (
+          <div className="buttons">
+            <Link to="/login">
+              <button>로그인</button>
+            </Link>
+            <Link to="/register">
+              <button>회원가입</button>
+            </Link>
+          </div>
         ) : (
-          <Link to="/login">
-            <button>
-              <div>
-                <BiSolidUser />
-              </div>
-              <p>Login</p>
-            </button>
-          </Link>
-        )}
+          <div
+            className="profile"
+            onMouseEnter={() => setSlide("show")}
+            onMouseLeave={() => setSlide("")}
+          >
+            <div className="photo">
+              <img src={user.photoURL} alt={user.photoURL} />
+            </div>
+            <div className="name">
+              <span>{user.displayName}</span>
+              <p>님 안녕하세요!</p>
+            </div>
+            <ul className={`menu ${slide}`}>
+              <li>
+                <BsPostcard />
+                <p>작성한 게시글</p>
+              </li>
 
-        <li className="Menu">
-          <RxBorderDotted />
-          {user && <li>로그아웃</li>}
-        </li>
+              <li>
+                <AiOutlineComment />
+                <p>작성한 댓글</p>
+              </li>
+              <li>
+                <AiOutlineHeart />
+                <p>좋아요</p>
+              </li>
+              <li
+                onClick={(e) => {
+                  handleLogout(e);
+                }}
+              >
+                <AiOutlineLogout />
+                <p>로그아웃</p>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </nav>
   );

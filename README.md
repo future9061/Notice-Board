@@ -200,7 +200,9 @@ router.post("/images", upload.single("image"), async (req, res) => {
   전체 F5 하면 사용자 정보가 저장된 redux가 초기화 되는 문제였다. <br />
   https://velog.io/@project_mizzu/React%EB%A1%9C-Firebase-%EC%86%8C%EC%85%9C%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0
 - 파이어베이스 프로필 사진 업로드 <br />
-https://hayley-0616.tistory.com/57 <br />
+  https://hayley-0616.tistory.com/57 <br />
+  https://velog.io/@wlwl99/Firebase-Cloud-Storage<br />
+
 s3 butket 이미지 업로드
 
 1. 클라이언트

@@ -1,17 +1,47 @@
 .PostItem {
-  width: 80%;
-  padding: 30px;
-  > div {
-    text-align: center;
-    cursor: pointer;
-    border: 1px solid red;
-    display: inline-block;
-    padding: 30px;
-    margin: 20px;
-    width: 30%;
+  width: 90%;
+  margin: 20px auto;
 
-    img {
-      width: 70%;
+  .PostItem-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: flex-start;
+
+    > .item {
+      margin: 15px;
+      width: 20%;
+      text-align: start;
+      transform: translateX(25%);
+      box-shadow: 1px 2px 4px 0px rgba($color: #000000, $alpha: 0.3);
+      border-radius: 5px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .text-wrap {
+        padding: 5px 10px;
+        height: 100px;
+        position: relative;
+
+        > h5 {
+          font-size: 17px;
+        }
+
+        > p {
+          font-size: 14px;
+        }
+
+        > span {
+          font-size: 8px;
+          position: absolute;
+          right: 5px;
+          bottom: 3px;
+          color: rgb(161, 161, 161);
+        }
+      }
     }
   }
 }

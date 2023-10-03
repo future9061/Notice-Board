@@ -8,17 +8,22 @@ function PostItem() {
 
   return (
     <div className="PostItem">
-      {post.map((elem) => {
-        return (
-          <div key={elem.postNum}>
-            <Link to={`/detail/${elem.postNum}`}>
-              <h5>{elem.title}</h5>
-              <img src={elem.img.imgUrl} alt="썸네일" />
-              <p>{elem.content}</p>
-            </Link>
-          </div>
-        );
-      })}
+      <div className="PostItem-inner">
+        {post.map((elem) => {
+          return (
+            <div key={elem.postNum} className="item">
+              <Link to={`/detail/${elem.postNum}`}>
+                <img src={elem.img.imgUrl} alt={elem.img.caption} />
+                <div className="text-wrap">
+                  <h5>{elem.title}</h5>
+                  <p>{elem.content}</p>
+                  <span>더 보기...</span>
+                </div>
+              </Link>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

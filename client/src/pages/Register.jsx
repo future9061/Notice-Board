@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import "../style/pages/Register.scss";
 import { AiFillHome } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,11 +8,11 @@ import {
   updateProfile,
   storage,
   ref,
-  uploadString,
   uploadBytes,
   getDownloadURL,
 } from "../firebase.js";
 import { BiSolidUser } from "react-icons/bi";
+import Button from "../components/ui/Button";
 
 function Register() {
   const [Name, setName] = useState("");
@@ -21,17 +21,19 @@ function Register() {
   const [PWConfirm, setPWConfirm] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [photo, setPhoto] = useState();
-  const photoRef = useRef();
+  const [photoUrl, setPhotoUrl] = useState();
   const navigate = useNavigate();
 
   const handleFileSelect = (e) => {
     setPhoto(e.target.files[0]);
+    const imageUrl = URL.createObjectURL(photo);
+    setPhotoUrl(imageUrl);
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (!(Name && Email && PW && PWConfirm)) {
+    if (!(Name && Email && PW && PWConfirm && photo)) {
       alert("모든 항목을 채워주세요");
       return;
     }
@@ -49,6 +51,7 @@ function Register() {
       const metadata = { contentType: photo.type };
       await uploadBytes(fileRef, photo, metadata);
       const fileUrl = await getDownloadURL(ref(storage, fileRef));
+      setPhotoUrl(fileUrl);
 
       await updateProfile(firebaseAuth.currentUser, {
         displayName: Name,
@@ -80,8 +83,10 @@ function Register() {
 
       <form>
         <div className="photo">
-          {"" ? (
-            <div>{/* <img src={photo} alt={photo} /> */}</div>
+          {photoUrl ? (
+            <div>
+              <img src={photoUrl} alt={photoUrl} />
+            </div>
           ) : (
             <div>
               <BiSolidUser />
@@ -90,7 +95,6 @@ function Register() {
           <input
             type="file"
             accept="image/*"
-            ref={photoRef}
             onChange={(e) => handleFileSelect(e)}
           />
         </div>
@@ -128,7 +132,12 @@ function Register() {
         />
         {errMsg && <p>{errMsg}</p>}
         <div className="buttons">
-          <button onClick={(e) => handleRegister(e)}>회원가입</button>
+          <Button
+            onClick={(e) => handleRegister(e)}
+            text="회원가입"
+            bgColor="#5BD6C0"
+            color="#fff"
+          />
         </div>
       </form>
     </div>

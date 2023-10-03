@@ -1,9 +1,9 @@
 import { initializeApp } from "firebase/app";
 import {
   getAuth, browserSessionPersistence, createUserWithEmailAndPassword,
-  setPersistence, signInWithEmailAndPassword, updateProfile
+  setPersistence, signInWithEmailAndPassword, updateProfile, signOut
 } from "firebase/auth";
-import { uploadBytes, getStorage, ref, uploadString, getDownloadURL } from "firebase/storage";
+import { uploadBytes, getStorage, ref, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -19,5 +19,5 @@ const firebaseAuth = getAuth(firebaseApp);
 const storage = getStorage(firebaseApp);
 
 
-export { uploadBytes, storage, ref, uploadString, getDownloadURL, browserSessionPersistence, setPersistence, firebaseAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile };
+export { uploadBytes, storage, ref, signOut, getDownloadURL, browserSessionPersistence, setPersistence, firebaseAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile };
 

@@ -1,23 +1,40 @@
-import React, { useState } from "react";
-import "../../style/components/ui/TopBanner.scss";
-import { AiFillApi } from "react-icons/ai";
-import { BiPlus } from "react-icons/bi";
+import React from "react";
+import "../../style/components/ui/TopBar.scss";
+import { BsPen, BsCodeSquare, BsGithub } from "react-icons/bs";
 
-//평소에는 opacity 0
-//1초마다 나타난다.
+import { HiOutlineEllipsisVertical } from "react-icons/hi2";
 function TopBar() {
   return (
     <div className="TopBar">
-      <ul>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ul>
-      <div className="tab">
-        <AiFillApi className="api-icon" />
-        <p>For developers</p>
+      <div className="TopBar-inner">
+        <div>
+          <BsPen className="pen" />
+          <p>교육</p>
+        </div>
+        <div>
+          <ul>
+            <a
+              href="https://github.com/future9061/for-developers"
+              target="_blank"
+            >
+              <li>
+                <BsCodeSquare className="icon" />
+              </li>
+
+              <li className="show">코드 보러 가기</li>
+            </a>
+          </ul>
+          <HiOutlineEllipsisVertical />
+          <ul>
+            <a href="https://github.com/future9061" target="_blank">
+              <li>
+                <BsGithub className="icon" />
+              </li>
+              <li className="show">깃 허브 놀러가기</li>
+            </a>
+          </ul>
+        </div>
       </div>
-      <BiPlus className="plus-icon" />
     </div>
   );
 }

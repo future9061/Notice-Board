@@ -1,110 +1,121 @@
-nav {
-  color: #4b4b4b;
-  padding: 10px 10px;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #e0e0e0;
+.NavBar {
+  box-shadow: 0px 4px 5px 0px rgba($color: #000000, $alpha: 0.1);
   background-color: #fff;
-  .arrows {
-    color: #ababab;
+  .NavBar-inner {
+    padding: 10px 50px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    > .buttons {
+      a {
+        &:nth-child(1) {
+          button {
+            background-color: #fff;
+            border: 1px solid #eaeaea;
+            &:hover {
+              border: 1px solid #eaeaea;
 
-    li {
-      margin-right: 15px;
+              background-color: #eaeaea;
+            }
+          }
+        }
 
-      &:last-child {
-        color: #4b4b4b;
-        cursor: pointer;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        text-align: center;
-        font-size: 1.1em;
-        transform: translateY(-1px);
-        padding: 1px;
+        &:nth-child(2) {
+          button {
+            background-color: rgb(252, 178, 158);
+            border: 1px solid rgb(252, 178, 158);
 
-        &:active {
-          background-color: #e2e2e2;
+            color: #fff;
+            &:hover {
+              background-color: #eaeaea;
+              border: 1px solid #eaeaea;
+
+              color: black;
+            }
+          }
         }
       }
     }
-  }
 
-  .url {
-    display: flex;
-    background-color: #f1f3f4;
-    width: 75%;
-    padding: 5px;
-    border-radius: 20px;
-    font-size: 0.8em;
-    gap: 10px;
-    align-items: center;
-    margin-right: 15px;
-
-    .text {
-      p {
-        display: none;
-      }
-
-      .show {
-        display: block;
-      }
-    }
-  }
-
-  .login {
-    display: flex;
-    align-items: center;
-    li {
-      margin-right: 20px;
-    }
-
-    button {
+    > .profile {
+      border: 1px solid #f1f1f1;
       display: flex;
-      border-radius: 20px;
-      justify-content: space-between;
       align-items: center;
       gap: 10px;
-      border: 1px solid #d4d4d4;
-      background-color: transparent;
       padding: 5px;
-      margin-right: 20px;
-
-      &:active {
-        background-color: #f1f3f4;
+      border-radius: 10px;
+      position: relative;
+      &:hover {
+        background-color: #f7f7f7;
+        cursor: pointer;
       }
-      > .photoUrl {
-        width: 30px;
-        height: 30px;
+      > .photo {
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
-        font-size: 1.5em;
+        border: 1px solid #eaeaea;
         overflow: hidden;
-        color: #fff;
-        background-color: #4b4b4b;
-        text-align: center;
-        img {
+        background-color: #fff;
+        > img {
           width: 100%;
           height: 100%;
           object-fit: contain;
         }
       }
-    }
-    .Menu {
-      transform: translateX(25px);
-      padding: 0px 5px;
-      border-radius: 10px;
-      cursor: pointer;
-      position: relative;
 
-      &:active {
-        background-color: #f1f3f4;
+      > .name {
+        display: flex;
+        align-items: center;
+        > span {
+          color: #2c9176;
+          font-weight: 800;
+          margin-right: 5px;
+        }
+
+        > p {
+          font-size: 13px;
+        }
       }
 
-      > li {
+      > .menu {
         position: absolute;
-        font-size: 14px;
-        border: 1px solid red;
+        background-color: #f7f7f7;
+        top: 0;
+        opacity: 0;
+        transition: 0.5s;
+        z-index: -1;
+
+        > li {
+          padding: 10px 40px;
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          text-wrap: nowrap;
+          &:hover {
+            background-color: #fff;
+            color: #2c9176;
+          }
+          &:nth-child(1) {
+            &::after {
+              content: "";
+              display: block;
+              border-bottom: 12px solid #f7f7f7;
+              border-top: 12px solid transparent;
+              border-left: 12px solid transparent;
+              border-right: 12px solid transparent;
+              bottom: calc(100%);
+              right: 10px;
+              position: absolute;
+            }
+          }
+        }
+      }
+
+      > .show {
+        transform: translateY(0);
+        opacity: 1;
+        top: calc(100% + 10px);
       }
     }
   }
