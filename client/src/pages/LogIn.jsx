@@ -47,6 +47,7 @@ function LogIn() {
       })
       .catch((err) => console.log("파이어베이스 로그인", err));
   };
+
   return (
     <div className="LogIn">
       <Link to="/">

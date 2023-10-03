@@ -47,8 +47,8 @@ function NavBar() {
         {user.uid ? (
           <Link to="/">
             <button>
-              <div>
-                <BiSolidUser />
+              <div className="photoUrl">
+                <img src={user.photoURL} alt={user.photoURL} />
               </div>
               <p>{user.displayName}</p>
             </button>

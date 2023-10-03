@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../style/pages/Register.scss";
 import { AiFillHome } from "react-icons/ai";
-import { FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import {
   firebaseAuth,
   createUserWithEmailAndPassword,
   updateProfile,
+  storage,
+  ref,
+  uploadString,
+  uploadBytes,
+  getDownloadURL,
 } from "../firebase.js";
+import { BiSolidUser } from "react-icons/bi";
 
 function Register() {
   const [Name, setName] = useState("");
@@ -16,11 +21,17 @@ function Register() {
   const [PWConfirm, setPWConfirm] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [photo, setPhoto] = useState();
+  const photoRef = useRef();
   const navigate = useNavigate();
+
+  const handleFileSelect = (e) => {
+    setPhoto(e.target.files[0]);
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (!(Name && Email && PW && PWConfirm && photo)) {
+    if (!(Name && Email && PW && PWConfirm)) {
       alert("모든 항목을 채워주세요");
       return;
     }
@@ -30,17 +41,22 @@ function Register() {
     }
 
     try {
-      const createdUser = await createUserWithEmailAndPassword(
-        firebaseAuth,
-        Email,
-        PW
-      );
+      await createUserWithEmailAndPassword(firebaseAuth, Email, PW);
 
-      await updateProfile(firebaseAuth.currentUser, { displayName: Name });
+      const storageRef = ref(storage);
+      const fileRef = ref(storageRef, `${firebaseAuth.currentUser.uid}`);
 
-      // console.log("createdUser", createdUser);
+      const metadata = { contentType: photo.type };
+      await uploadBytes(fileRef, photo, metadata);
+      const fileUrl = await getDownloadURL(ref(storage, fileRef));
+
+      await updateProfile(firebaseAuth.currentUser, {
+        displayName: Name,
+        photoURL: fileUrl,
+      });
+
       alert("회원가입이 완료되었습니다");
-      // navigate("/login");
+      navigate("/login");
     } catch (err) {
       switch (err.code) {
         case "auth/weak-password":
@@ -64,13 +80,18 @@ function Register() {
 
       <form>
         <div className="photo">
-          <FaUser className="photo-icon" />
+          {"" ? (
+            <div>{/* <img src={photo} alt={photo} /> */}</div>
+          ) : (
+            <div>
+              <BiSolidUser />
+            </div>
+          )}
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => {
-              setPhoto(e.target.files[0]);
-            }}
+            ref={photoRef}
+            onChange={(e) => handleFileSelect(e)}
           />
         </div>
         <input

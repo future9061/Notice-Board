@@ -3,7 +3,7 @@ import {
   getAuth, browserSessionPersistence, createUserWithEmailAndPassword,
   setPersistence, signInWithEmailAndPassword, updateProfile
 } from "firebase/auth";
-
+import { uploadBytes, getStorage, ref, uploadString, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -15,8 +15,9 @@ const firebaseConfig = {
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
-
 const firebaseAuth = getAuth(firebaseApp);
+const storage = getStorage(firebaseApp);
 
-export { browserSessionPersistence, setPersistence, firebaseAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile };
+
+export { uploadBytes, storage, ref, uploadString, getDownloadURL, browserSessionPersistence, setPersistence, firebaseAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile };
 
