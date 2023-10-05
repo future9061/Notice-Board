@@ -13,6 +13,7 @@ import {
 } from "../firebase.js";
 import { BiSolidUser } from "react-icons/bi";
 import Button from "../components/ui/Button";
+import axios from "axios";
 
 function Register() {
   const [Name, setName] = useState("");
@@ -22,10 +23,36 @@ function Register() {
   const [errMsg, setErrMsg] = useState("");
   const [photo, setPhoto] = useState();
   const [photoUrl, setPhotoUrl] = useState(null);
+  const [nameCheck, setNameCheck] = useState(false);
+  const [nameInfor, setNameInfor] = useState("");
   const navigate = useNavigate();
 
   const handleFileSelect = (e) => {
     setPhoto(e.target.files[0]);
+  };
+
+  const handleNameCheck = async (e) => {
+    e.preventDefault();
+
+    const body = {
+      displayName: Name,
+    };
+
+    axios
+      .post("/api/user/namecheck", body)
+      .then((res) => {
+        if (res.data.success) {
+          if (res.data.check && Name !== "") {
+            setNameCheck(true);
+            setNameInfor("사용 가능한 닉네임입니다.");
+          } else {
+            setNameInfor("사용 불가능한 닉네임입니다.");
+            setNameCheck(false);
+            return;
+          }
+        }
+      })
+      .catch((err) => console.log("닉네임 체크 에러", err));
   };
 
   useEffect(() => {
@@ -46,6 +73,10 @@ function Register() {
       alert("비밀번호가 일치하지 않습니다");
       return;
     }
+    if (!nameCheck) {
+      alert("닉네임이 중복검사를 진행해주세요");
+      return;
+    }
 
     try {
       await createUserWithEmailAndPassword(firebaseAuth, Email, PW);
@@ -63,8 +94,25 @@ function Register() {
         photoURL: fileUrl,
       });
 
-      alert("회원가입이 완료되었습니다");
-      navigate("/login");
+      let body = {
+        displayName: firebaseAuth.currentUser.displayName,
+        email: firebaseAuth.currentUser.email,
+        photoURL: firebaseAuth.currentUser.photoURL,
+        uid: firebaseAuth.currentUser.uid,
+      };
+
+      axios
+        .post("/api/user/register", body)
+        .then((res) => {
+          if (res.data.success) {
+            alert("회원가입이 완료되었습니다");
+            navigate("/login");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("회원가입이 실패하였습니다");
+        });
     } catch (err) {
       switch (err.code) {
         case "auth/weak-password":
@@ -103,14 +151,25 @@ function Register() {
             onChange={(e) => handleFileSelect(e)}
           />
         </div>
-        <input
-          type="name"
-          placeholder="이름"
-          value={Name}
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-        />
+        <div className="nikname">
+          <input
+            type="name"
+            placeholder="이름"
+            value={Name}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+          />
+
+          <Button
+            text="중복검사"
+            bgColor="#5BD6C0"
+            color="#fff"
+            onClick={(e) => handleNameCheck(e)}
+          />
+        </div>
+
+        {<p>{nameInfor}</p>}
         <input
           type="email"
           placeholder="이메일"

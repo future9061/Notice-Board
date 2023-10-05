@@ -19,6 +19,29 @@
     align-items: center;
     height: 100%;
 
+    > .nikname {
+      height: 10%;
+      width: 41%;
+      margin-bottom: 20px;
+
+      position: relative;
+
+      > input {
+        width: 97%;
+        height: 70%;
+        padding: 10px;
+        border: none;
+        outline: none;
+        border-radius: 20px;
+      }
+
+      > button {
+        position: absolute;
+        top: calc(50% - 15px);
+        right: 5px;
+      }
+    }
+
     input {
       width: 40%;
       height: 7%;

@@ -14,6 +14,7 @@ const postSchema = new mongoose.Schema({
     uid: String,
     displayName: String,
     email: String,
+    photoURL: String
   },
   date: String
 });
