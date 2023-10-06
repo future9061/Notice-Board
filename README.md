@@ -84,12 +84,12 @@
 
 ## 📌 주요 기능
 
-#### 파이어베이스 인증 객체로 로그인, 로그아웃 - [코드 보기](#파이어베이스로-로그인-로그아웃-기능)
+#### 파이어베이스 인증 객체로 로그인, 로그아웃
 
-- 파이어베이스 인증 객체를 이용하여 로그인, 로그아웃 기능 구현
+- 파이어베이스 인증 객체를 이용하여 [회원가입](#회원가입), [로그인](#로그인), 로그아웃 기능 구현
 - setPersistence로 사용자의 로그인 데이터를 sessionStorage에 저장하여 탭을 닫으면 로그아웃 되로록 옵션을 설정
-- 사용자의 프로필 사진은 파이어베이스 storage에 저장하고 url을 만들어 이미지를 보여준다.
-- 닉네임 중복 검사
+- 사용자의 [프로필 사진](#프로필-사진)은 파이어베이스 storage에 저장하고 url을 만들어 이미지를 보여준다.
+- [닉네임 중복 검사](#)
 
 <br >
 
@@ -145,13 +145,113 @@
 
 ## 🧾 code review
 
-- ### 파이어베이스로 로그인, 로그아웃 기능
+### 회원가입
 
-  - 로그인
+- 빈 항목이 있거나 비밀번호 불일치 시 함수를 종료시킨다.
+- 유저가 작성한 이메일과 비밀번호를 createUserWithEmailAndPassword함수에 전달한다.
+- 회원가입이 완료 됐을 시 alert 알림과 함께 login 페이지로 이동한다.
+- 회원가입 실패 시 err.code에 따른 경고문을 보여준다.
 
-  ```javascript
+```javascript
 
-  ```
+const handleRegister = async (e) => {
+  e.preventDefault();
+
+  if (!(Name && Email && PW && PWConfirm && photo)) {
+    alert("모든 항목을 채워주세요");
+    return;
+  }
+  if (PW !== PWConfirm) {
+    alert("비밀번호가 일치하지 않습니다");
+    return;
+  }
+
+  try {
+    await createUserWithEmailAndPassword(firebaseAuth, Email, PW);
+    alert("회원가입이 완료되었습니다");
+    navigate("/login");
+  } catch (err) {
+   //err.code에 따라 경고문을 보여줌. switch문을 이용..
+    }
+  }
+};
+
+```
+
+<br />
+
+### 프로필 사진
+
+- 회원가입시 사용자가 선택한 파일을 파이어베이스 storage에 저장한다.
+- 선택한 사진을 미리 보기 위해 createObjectURL로 임시 url을 생성한다.
+- storage 참조를 생성하고 uploadBytes 메소드에 참조와 파일, 옵션을 제공한다.
+- getDownloadURL로 저장된 파일의 url을 만들어 사용자 프로필에 업데이트한다.
+
+```javascript
+//사용자가 파일을 onChange 할 때마다 임시 url을 생성
+useEffect(() => {
+  if (photo) {
+    const imageUrl = URL.createObjectURL(photo);
+    setPhotoUrl(imageUrl);
+  }
+}, [photo]);
+
+//storage의 참조를 생성하고 uploadBytes에 제공
+const storageRef = ref(storage);
+const fileRef = ref(storageRef, `${firebaseAuth.currentUser.uid}`);
+const metadata = { contentType: photo.type };
+await uploadBytes(fileRef, photo, metadata);
+
+const fileUrl = await getDownloadURL(ref(storage, fileRef));
+
+//생성한 url을 사용자 프로필에 업데이트
+await updateProfile(firebaseAuth.currentUser, {
+  displayName: Name,
+  photoURL: fileUrl,
+});
+```
+
+  <br />
+
+### 로그인
+
+- setPersistence으로 로그인 정보가 sessionStorage에 저장되도록 한다.
+- signInWithEmailAndPassword 프로퍼티에 사용자가 입력한 이메일과 비밀번호를 제공하면 로그인 된다.
+- err.code에 따라 사용자에게 문제 사항을 알린다.
+
+```javascript
+const handleLogin = async (e) => {
+  e.preventDefault();
+  if (!(Email && PW)) {
+    alert("모든 항목을 채워주세요");
+    return;
+  }
+
+  await setPersistence(firebaseAuth, browserSessionPersistence)
+    .then(() => {
+      signInWithEmailAndPassword(firebaseAuth, Email, PW)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((err) => {
+          switch (err.code) {
+            case "auth/invalid-email":
+              setErrMsg("존재하지 않는 아이디 입니다");
+              break;
+            case "auth/invalid-login-credentials":
+              setErrMsg("잘못된 비밀번호입니다");
+              break;
+            case "auth/wrong-password":
+              setErrMsg("잘못된 비밀번호입니다");
+              break;
+          }
+        });
+    })
+    .catch((err) => console.log("파이어베이스 로그인", err));
+};
+```
+
+<br />
 
 - ### S3 Bucket에 이미지 저장
   - client에서 FormData 인스턴스로 이미지 파일을 서버에 전달
@@ -215,15 +315,9 @@ router.post("/images", upload.single("image"), async (req, res) => {
 
 ❗기능
 
-로그인 및 로그아웃 - 닉네임 중복검사
-글 쓰기
-글 수정
-글 삭제
 페이지네이션
-게시글 조회
 조회수
 댓글 - 수정, 삭제
-❗브랜치 관리 main develop client 랑 server 따로 만들어서 별도로 분리하고 merge는 develop에서 반드시 기능별로 커밋하기 기능 짤 때마다 feature/login(c) feature/login/(s) 나눠서 프론트 단 백 단 브랜치 구분해서 올려! add 할 때 폴더 구분
 
 참고한 게시물
 
