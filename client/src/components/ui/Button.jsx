@@ -1,7 +1,7 @@
 import React from "react";
 import "../../style/components/ui/Button.scss";
 
-function Button({ text, bgColor, color, icon, border, onClick }) {
+function Button({ text, bgColor, color, icon, border, onClick, fontSize }) {
   return (
     <button
       onClick={onClick}
@@ -10,6 +10,7 @@ function Button({ text, bgColor, color, icon, border, onClick }) {
         background: bgColor,
         color: color,
         border: border,
+        fontSize: fontSize,
       }}
     >
       <p>{text}</p>

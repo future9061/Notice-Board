@@ -1,0 +1,37 @@
+.RepleUpload {
+  padding: 10px;
+  border: 1px solid rgba(213, 213, 213, 0.5);
+  width: 60%;
+  margin: auto;
+  border-radius: 20px;
+
+  > h5 {
+    padding: 10px 20px;
+    span {
+      color: #62c554;
+      font-size: 1.1em;
+    }
+  }
+
+  > .write {
+    width: 90%;
+    margin: auto;
+
+    input {
+      width: 90%;
+      height: 90%;
+      border-radius: 5px;
+      padding: 20px;
+    }
+
+    > .buttons {
+      width: 90%;
+      margin: 5px auto;
+      text-align: end;
+
+      button {
+        font-size: 12px;
+      }
+    }
+  }
+}

@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Post = require("../Model/PostModel.js")
 const Counter = require("../Model/CounterModel.js")
-const User = require("../Model/User.js")
+const User = require("../Model/UserModel.js")
+const Comment = require("../Model/CommentModel.js")
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const crypto = require('crypto');
 require('dotenv').config()
@@ -11,6 +12,8 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 const sharp = require('sharp');
 
+
+//게시글 작성
 router.post("/submit", (req, res) => {
   Counter.findOne({ name: "counter" })
     .then((counter) => {
@@ -27,7 +30,7 @@ router.post("/submit", (req, res) => {
     .catch((err) => { console.log("서버", err) })
 })
 
-
+//게시글 이미지 s3 버켓 저장
 const bucketName = process.env.BUCKET_NAME
 const bucketRegion = process.env.BUCKER_REGION
 const accessKey = process.env.ACCESS_KEY
@@ -77,6 +80,9 @@ router.post("/images", upload.single('image'), async (req, res) => {
   }
 })
 
+
+
+//회원가입 
 router.post("/user/register", async (req, res) => {
 
   const newUser = new User(req.body)
@@ -86,6 +92,8 @@ router.post("/user/register", async (req, res) => {
     .catch((err) => { console.log("서버 회원가입", err) })
 })
 
+
+//닉네임 중복검사
 router.post("/user/namecheck", async (req, res) => {
 
   User.findOne({ displayName: req.body.displayName })
@@ -100,9 +108,33 @@ router.post("/user/namecheck", async (req, res) => {
       }
     })
     .catch((err) => console.log(err))
-
 })
 
+
+//댓글 업로드
+router.post("/reple/submit", (req, res) => {
+  let temp = {
+    reple: req.body.reple,
+    user: req.body.user,
+    postNum: req.body.postNum,
+  };
+
+  User.findOne({ uid: req.body.user.uid }).exec().then(() => {
+
+    const NewComment = new Comment(temp)
+
+    NewComment.save().then(() => {
+
+      Post.findOneAndUpdate({ postNum: req.body.postNum }, { $inc: { repleNum: 1 } }).then(() => {
+        res.status(200).send({ success: true })
+      })
+
+    })
+  })
+
+
+
+})
 
 
 module.exports = router;

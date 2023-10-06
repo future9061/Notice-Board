@@ -163,9 +163,10 @@ function Register() {
 
           <Button
             text="중복검사"
-            bgColor="#5BD6C0"
+            bgColor="#949494"
             color="#fff"
             onClick={(e) => handleNameCheck(e)}
+            fontSize="10px"
           />
         </div>
 
