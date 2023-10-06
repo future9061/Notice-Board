@@ -57,40 +57,5 @@
         }
       }
     }
-
-    .reply {
-      background-color: #f7f7f7;
-      padding: 10px;
-
-      > h5 {
-        margin-bottom: 10px;
-        span {
-          color: #62c554;
-          font-size: 1.1em;
-        }
-      }
-
-      > .write {
-        width: 80%;
-        margin: auto;
-
-        input {
-          width: 90%;
-          height: 90%;
-          border-radius: 5px;
-          padding: 20px;
-        }
-
-        > .buttons {
-          width: 90%;
-          margin: 5px auto;
-          text-align: end;
-
-          button {
-            font-size: 12px;
-          }
-        }
-      }
-    }
   }
 }

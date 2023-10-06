@@ -16,7 +16,11 @@ const postSchema = new mongoose.Schema({
     email: String,
     photoURL: String
   },
-  date: String
+  date: String,
+  repleNum: {
+    type: Number,
+    default: 0
+  }
 });
 
 const Post = mongoose.model('Post', postSchema);

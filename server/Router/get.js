@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Post = require("../Model/PostModel.js")
+const Comment = require("../Model/CommentModel.js")
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { GetObjectCommand, S3Client } = require("@aws-sdk/client-s3");
 require('dotenv').config()
@@ -33,6 +34,14 @@ router.get("/", async (req, res) => {
     post.img.imgUrl = url
   }
   res.send({ success: true, post: posts })
+})
+
+//댓글 가져오기
+//댓글에 uid도 저장되어 있으니까 uid와 일치하는 사진과 이름
+router.get("/reple/showReple", (req, res) => {
+  Comment.find({ postNum: req.query.postNum }).then((doc) => {
+    res.status(200).send({ success: true, repleList: doc })
+  }).catch((err) => { res.status(400).send({ success: false }) })
 })
 
 module.exports = router

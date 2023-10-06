@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import "../style/pages/Detail.scss";
 import axios from "axios";
+import Reple from "../components/ui/Reple/RepleArea";
+import RepleArea from "../components/ui/Reple/RepleArea";
 
 function Detail() {
   const params = useParams();
@@ -52,20 +54,8 @@ function Detail() {
             <button onClick={(e) => handleDelete(e)}>삭제</button>
           </div>
         )}
-
-        <div className="reply">
-          <h5>
-            댓글 <span>0</span>개
-          </h5>
-          <div className="write">
-            <input type="text" placeholder="댓글 쓰기" />
-            <div className="buttons">
-              <button>취소</button>
-              <button>등록</button>
-            </div>
-          </div>
-        </div>
       </div>
+      <RepleArea />
     </div>
   );
 }
