@@ -58,10 +58,18 @@ function NavBar() {
               <p>님 안녕하세요!</p>
             </div>
             <ul className={`menu ${slide}`}>
-              <li>
-                <BsPostcard />
-                <p>작성한 게시글</p>
-              </li>
+              <Link to="profile">
+                <li>
+                  <BsPostcard />
+                  <p>내 정보</p>
+                </li>
+              </Link>
+              <Link to="profile">
+                <li>
+                  <BsPostcard />
+                  <p>작성한 게시글</p>
+                </li>
+              </Link>
 
               <li>
                 <AiOutlineComment />

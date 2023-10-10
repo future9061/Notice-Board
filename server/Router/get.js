@@ -19,7 +19,7 @@ const s3Client = new S3Client({
   }
 })
 
-router.get("/", async (req, res) => {
+router.get("/home", async (req, res) => {
   const posts = await Post.find();
 
   for (const post of posts) {
@@ -37,11 +37,16 @@ router.get("/", async (req, res) => {
 })
 
 //댓글 가져오기
-//댓글에 uid도 저장되어 있으니까 uid와 일치하는 사진과 이름
 router.get("/reple/showReple", (req, res) => {
   Comment.find({ postNum: req.query.postNum }).then((doc) => {
     res.status(200).send({ success: true, repleList: doc })
-  }).catch((err) => { res.status(400).send({ success: false }) })
+  }).catch(() => { res.status(400).send({ success: false }) })
+})
+
+//내가 쓴 글 가져오기
+router.get("/profile/mypost", (req, res) => {
+  console.log(req.query)
+  res.send({})
 })
 
 module.exports = router

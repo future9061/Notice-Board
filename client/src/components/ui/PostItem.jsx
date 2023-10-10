@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../style/components/ui/PostItem.scss";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 function PostItem() {
   const post = useSelector((state) => state.post);
+
+  useEffect(() => {
+    console.log("post", post);
+  }, []);
 
   return (
     <div className="PostItem">
