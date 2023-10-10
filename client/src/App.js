@@ -3,21 +3,21 @@ import './App.css';
 import Header from './components/Header';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { getPost } from './store/postSlice.js';
 import { userLogin } from './store/userSlice';
 
 function App() {
-  const post = useSelector((state) => state.post)
   const dispatch = useDispatch();
 
   useEffect(() => {
-    axios.get("/api")
+    axios.get("/api/home")
       .then((res) => {
+        console.log(res.data.post)
         res.data.success && dispatch(getPost(res.data.post))
       })
       .catch((err) => console.log("클라이언트 에러", err))
-  }, [post])
+  }, [])
 
   useEffect(() => {
     for (const key of Object.keys(sessionStorage)) {
