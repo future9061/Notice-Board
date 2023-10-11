@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../../style/components/ui/NavBar.scss";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { BsPostcard } from "react-icons/bs";
 import {
@@ -15,6 +15,7 @@ function NavBar() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [slide, setSlide] = useState("");
+  const navigate = useNavigate();
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -30,19 +31,15 @@ function NavBar() {
   return (
     <nav className="NavBar">
       <div className="NavBar-inner">
-        <Link to="/">
-          <div className="logo">
-            <img src={process.env.PUBLIC_URL + "/img/logo.png"} alt="logo" />
-          </div>
-        </Link>
+        <div className="logo" onClick={() => navigate("/")}>
+          <img src={process.env.PUBLIC_URL + "/img/logo.png"} alt="logo" />
+        </div>
+
         {!user.uid ? (
           <div className="buttons">
-            <Link to="/login">
-              <button>로그인</button>
-            </Link>
-            <Link to="/register">
-              <button>회원가입</button>
-            </Link>
+            <button onClick={() => navigate("/login")}>로그인</button>
+
+            <button onClick={() => navigate("/register")}>회원가입</button>
           </div>
         ) : (
           <div
@@ -58,18 +55,15 @@ function NavBar() {
               <p>님 안녕하세요!</p>
             </div>
             <ul className={`menu ${slide}`}>
-              <Link to="profile">
-                <li>
-                  <BsPostcard />
-                  <p>내 정보</p>
-                </li>
-              </Link>
-              <Link to="profile">
-                <li>
-                  <BsPostcard />
-                  <p>작성한 게시글</p>
-                </li>
-              </Link>
+              <li>
+                <BsPostcard />
+                <p>내 정보</p>
+              </li>
+
+              <li onClick={() => navigate(`/mypost`)}>
+                <BsPostcard />
+                <p>작성한 게시글</p>
+              </li>
 
               <li>
                 <AiOutlineComment />

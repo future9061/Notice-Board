@@ -4,13 +4,14 @@ const Post = require("../Model/PostModel.js")
 const Counter = require("../Model/CounterModel.js")
 const User = require("../Model/UserModel.js")
 const Comment = require("../Model/CommentModel.js")
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client, PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
 const crypto = require('crypto');
 require('dotenv').config()
 const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 const sharp = require('sharp');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 
 
 //게시글 작성
@@ -132,9 +133,36 @@ router.post("/reple/submit", (req, res) => {
     })
   })
 
+})
+
+//내가 쓴 글 가져오기
+router.post(`/mypost`, async (req, res) => {
+
+  try {
+    const uid = req.body.uid;
+
+    const posts = await Post.find({ 'user.uid': uid })
+
+
+    for (const post of posts) {
+      const getObjectParams = {
+        Bucket: bucketName,
+        Key: post.img.imgId
+      }
+
+      const command = new GetObjectCommand(getObjectParams)
+      const url = await getSignedUrl(s3, command, { expiresIn: 3600 })
+      post.img.imgUrl = url
+    }
+
+    res.status(200).send({ success: true, post: posts })
+
+  } catch (err) { console.log('내 게시글', err) }
+
 
 
 })
+
 
 
 module.exports = router;
