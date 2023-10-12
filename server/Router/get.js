@@ -43,10 +43,4 @@ router.get("/reple/showReple", (req, res) => {
   }).catch(() => { res.status(400).send({ success: false }) })
 })
 
-//내가 쓴 글 가져오기
-router.get("/profile/mypost", (req, res) => {
-  console.log(req.query)
-  res.send({})
-})
-
 module.exports = router

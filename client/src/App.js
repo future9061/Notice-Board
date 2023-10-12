@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     axios.get("/api/home")
       .then((res) => {
-        console.log(res.data.post)
+
         res.data.success && dispatch(getPost(res.data.post))
       })
       .catch((err) => console.log("클라이언트 에러", err))

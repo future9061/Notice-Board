@@ -16,6 +16,7 @@ import Upload from './pages/Upload';
 import Detail from './pages/Detail';
 import Profile from './pages/Profile';
 import Edit from './pages/Edit';
+import MyPost from './pages/MyPost';
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/Profile",
         element: <Profile />,
+      },
+      {
+        path: "/mypost",
+        element: <MyPost />
       }
     ],
   },
