@@ -95,7 +95,7 @@ router.post("/user/register", async (req, res) => {
 
 
 //닉네임 중복검사
-router.post("/user/namecheck", async (req, res) => {
+router.post("/user/namecheck", (req, res) => {
 
   User.findOne({ displayName: req.body.displayName })
     .exec()
