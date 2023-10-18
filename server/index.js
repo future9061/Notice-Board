@@ -22,7 +22,7 @@ app.listen(port, () => {
 mongoose.connect(process.env.MONGDB_URI).then(() => console.log('몽고DB 연결성공')).catch(() => console.log('failed'))
 
 app.get('/', (req, res) => {
-  res.send(path.join(__dirname, `../client/build/index.html`))
+  res.send(path.join(__dirname, `../client/build`))
 })
 
 

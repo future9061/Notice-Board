@@ -7,7 +7,7 @@
 5. [📌 주요 기능](#-주요-기능)
 6. [🧾 code review](#-code-review)
 7. [📢 Project review](#-project-review)
-8. [🙏 참고한 게시글]
+8. [🙏 참고한 게시글](#-참고한-게시글)
 
 <br>
 
@@ -138,14 +138,14 @@
 
 #### 댓글
 
-- Create
-- Read
-- Update
-- Delete
+- Create [-코드보기](#댓글-생성)
 
-<br>
+  - 작성한 댓글 내용, 작성한 사용자, 해당 게시글의 고유 번호를 담은 데이터와 함께 post 메서드로 서버에 요청합니다
+  - 요청을 받은 서버는 해당 데이터를 Comment 모델의 인스턴스를 생성해 저장한다.
+  - 게시글의 총 댓글 개수를 반환하기 위해 해당 게시글의 postNum을 inc로 1 증가시킨다.
 
-#### 검색
+- Read [-코드보기](#댓글-조회)
+  - useEffect로 컴포넌트 랜더링 시 get으로 데이터를 요청한다.
 
 <br>
 
@@ -364,13 +364,90 @@ for (const post of posts) {
 }
 ```
 
-## 📢 Project review
+<br>
 
-❗기능
+### 댓글 CRUD
 
-페이지네이션
-조회수
-댓글 - 수정, 삭제
+- ##### 댓글 생성
+
+```javascript
+//client
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  // 로그인 하지 않았거나 댓글의 내용이 없으면 return 하는 조건문 생략..
+
+  const body = {
+    reple: reple,
+    user: user,
+    postNum: Number(postNum),
+  };
+
+  axios
+    .post("/api/post/reple", body)
+    .then((res) => {
+      res.data.success && alert("댓글 작성이 성공하였습니다");
+      setReple("");
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("댓글 작성이 실패하였습니다.");
+    });
+};
+
+//server
+
+router.post("/post/reple", (req, res) => {
+  let temp = {
+    reple: req.body.reple,
+    user: req.body.user,
+    postNum: req.body.postNum,
+  };
+
+  User.findOne({ uid: req.body.user.uid })
+    .exec()
+    .then(() => {
+      const NewComment = new Comment(temp);
+      NewComment.save().then(() => {
+        Post.findOneAndUpdate(
+          { postNum: req.body.postNum },
+          { $inc: { repleNum: 1 } }
+        ).then(() => {
+          res.status(200).send({ success: true });
+        });
+      });
+    });
+});
+```
+
+- ##### 댓글 조회
+
+```javascript
+//client
+
+useEffect(() => {
+  axios
+    .get("/api/reple", { params: { postNum: params.postNum } })
+    .then((res) => {
+      if (res.data.success) {
+        setRepleList([...res.data.repleList]);
+        setRepleNum(res.data.repleNum);
+      }
+    });
+}, []);
+
+//server
+router.get("/reple", (req, res) => {
+  Comment.find({ postNum: req.query.postNum })
+    .then((doc) => {
+      res.status(200).send({ success: true, repleList: doc });
+    })
+    .catch(() => {
+      res.status(400).send({ success: false });
+    });
+});
+```
 
 ## 🙏 참고한 게시글
 

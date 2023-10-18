@@ -37,7 +37,7 @@ router.get("/home", async (req, res) => {
 })
 
 //댓글 가져오기
-router.get("/reple/showReple", (req, res) => {
+router.get("/reple", (req, res) => {
   Comment.find({ postNum: req.query.postNum }).then((doc) => {
     res.status(200).send({ success: true, repleList: doc })
   }).catch(() => { res.status(400).send({ success: false }) })

@@ -113,7 +113,7 @@ router.post("/user/namecheck", (req, res) => {
 
 
 //댓글 업로드
-router.post("/reple/submit", (req, res) => {
+router.post("/post/reple", (req, res) => {
   let temp = {
     reple: req.body.reple,
     user: req.body.user,
@@ -121,15 +121,11 @@ router.post("/reple/submit", (req, res) => {
   };
 
   User.findOne({ uid: req.body.user.uid }).exec().then(() => {
-
     const NewComment = new Comment(temp)
-
     NewComment.save().then(() => {
-
       Post.findOneAndUpdate({ postNum: req.body.postNum }, { $inc: { repleNum: 1 } }).then(() => {
         res.status(200).send({ success: true })
       })
-
     })
   })
 

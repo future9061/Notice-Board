@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../../style/components/ui/Reple/RepleUpload.scss";
 import axios from "axios";
 
-function RepleUpload({ postNum, user, setSubmit, submit }) {
+function RepleUpload({ postNum, user }) {
   const [reple, setReple] = useState("");
 
   const handleSubmit = (e) => {
@@ -26,11 +26,10 @@ function RepleUpload({ postNum, user, setSubmit, submit }) {
     };
 
     axios
-      .post("/api/reple/submit", body)
+      .post("/api/post/reple", body)
       .then((res) => {
         res.data.success && alert("댓글 작성이 성공하였습니다");
         setReple("");
-        setSubmit(!submit);
       })
       .catch((err) => {
         console.log(err);
@@ -38,11 +37,26 @@ function RepleUpload({ postNum, user, setSubmit, submit }) {
       });
   };
 
+  const handleCancle = (e) => {
+    e.preventDefault();
+    setReple("");
+  };
+
   return (
     <div className="RepleUpload">
-      <h5>
-        댓글 <span>0</span>개
-      </h5>
+      <RepleInput
+        onSubmit={handleSubmit}
+        onClick={handleCancle}
+        setReple={setReple}
+        reple={reple}
+      />
+    </div>
+  );
+}
+
+function RepleInput({ onSubmit, onClick, setReple, reple }) {
+  return (
+    <div>
       <form className="write">
         <input
           type="text"
@@ -53,19 +67,14 @@ function RepleUpload({ postNum, user, setSubmit, submit }) {
           }}
         />
         <div className="buttons">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setReple("");
-            }}
-          >
-            취소
-          </button>
-          <button onClick={(e) => handleSubmit(e)}>등록</button>
+          <button onClick={(e) => onClick(e)}>취소</button>
+          <button onSubmit={(e) => onSubmit(e)}>등록</button>
         </div>
       </form>
     </div>
   );
 }
+
+export { RepleInput };
 
 export default RepleUpload;
