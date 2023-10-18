@@ -1,47 +1,58 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../../../style/components/ui/Reple/RepleContent.scss";
-import { useSelector } from "react-redux";
+import { RepleInput } from "./RepleUpload";
 
-function RepleContent({ elem, idx }) {
+function RepleContent({ elem, idx, user }) {
   const [modalFlag, setModalFlag] = useState(false);
+  const [editFlag, setEditFlag] = useState(false);
+  const [editReple, setEditReple] = useState();
   const ref = useRef();
   useOnClickOutside(ref, () => setModalFlag(false));
-  const user = useSelector((state) => state.user);
-
-  useEffect(() => {
-    console.log(elem.user.uid);
-  }, []);
 
   return (
     <div className="RepleContent">
-      <div key={idx} className="item">
-        <div className="profile">
-          <div className="img_wrap">
-            <img src={elem.user.photoURL} alt={elem.user.photoURL} />
-          </div>
-          <span>{elem.user.displayName}</span>
-        </div>
-        <div className="text">
-          <p>{elem.reple}</p>
-          {elem.user.uid === user.uid && (
-            <div className="modalControl">
-              <span
-                onClick={() => {
-                  setModalFlag(true);
-                }}
-              >
-                ⋯
-              </span>
-              {modalFlag && (
-                <div className="modal" ref={ref}>
-                  <button>수정</button>
-                  <button>삭제</button>
-                </div>
-              )}
+      {editFlag ? (
+        <>
+          <h4>{user.displayName}</h4>
+          <RepleInput reple={editReple} setReple={setEditReple} />
+        </>
+      ) : (
+        <div key={idx} className="item">
+          <div className="profile">
+            <div className="img_wrap">
+              <img src={elem.user.photoURL} alt={elem.user.photoURL} />
             </div>
-          )}
+            <span>{elem.user.displayName}</span>
+          </div>
+          <div className="text">
+            <p>{elem.reple}</p>
+            {elem.user.uid === user.uid && (
+              <div className="modalControl">
+                <span
+                  onClick={() => {
+                    setModalFlag(true);
+                  }}
+                >
+                  ⋯
+                </span>
+                {modalFlag && (
+                  <div className="modal" ref={ref}>
+                    <button
+                      onClick={() => {
+                        setEditFlag(true);
+                        setModalFlag(false);
+                      }}
+                    >
+                      수정
+                    </button>
+                    <button>삭제</button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

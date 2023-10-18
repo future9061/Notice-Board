@@ -1,29 +1,15 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../../../style/components/ui/Reple/RepleList.scss";
 import RepleContent from "./RepleContent";
 
-function RepleList({ postNum, submit }) {
-  const [repleList, setRepleList] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("/api/reple/showReple", { params: { postNum: postNum } })
-      .then((res) => {
-        if (res.data.success) {
-          setRepleList([...res.data.repleList]);
-          console.log(repleList);
-        }
-      });
-  }, [submit]);
-
+function RepleList({ repleList, user }) {
   return (
     <div className="RepleList">
       {repleList.map((elem, idx) => {
-        return <RepleContent elem={elem} idx={idx} />;
+        return <RepleContent elem={elem} idx={idx} user={user} />;
       })}
     </div>
   );
 }
 
-export default RepleList;
+export default React.memo(RepleList);

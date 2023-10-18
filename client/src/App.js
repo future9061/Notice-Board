@@ -11,22 +11,13 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    axios.get("/api/home")
-      .then((res) => {
-
-        res.data.success && dispatch(getPost(res.data.post))
-      })
-      .catch((err) => console.log("클라이언트 에러", err))
-  }, [])
-
-  useEffect(() => {
     for (const key of Object.keys(sessionStorage)) {
-      if (key.includes('firebase:authUser:')) {
-        const userData = JSON.parse(sessionStorage.getItem(key))
+      if (key.includes("firebase:authUser:")) {
+        const userData = JSON.parse(sessionStorage.getItem(key));
         dispatch(userLogin(userData));
       }
     }
-  }, [])
+  }, []);
 
   return (
     <div className='app'>
